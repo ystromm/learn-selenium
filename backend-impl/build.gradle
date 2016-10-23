@@ -1,10 +1,25 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
+    }
+}
+
 apply plugin: 'java'
+apply plugin: 'spring-boot'
 
 repositories {
     jcenter()
 }
 
-
 dependencies {
     compileOnly "org.projectlombok:lombok:1.16.10"
+    compile project(':backend-api')
+    compile "com.google.guava:guava:19.0"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.webjars:webjars-locator"
+    // testCompile "org.testng:testng:6.9.13.6"
+    testCompile "org.springframework.boot:spring-boot-starter-test"
 }
