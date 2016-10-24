@@ -1,9 +1,9 @@
 package com.github.ystromm.learn_selenium.backend_impl;
 
 import com.github.ystromm.learn_selenium.backend_api.Todo;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -14,7 +14,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class TodoRepository {
     private final Map<Integer, Todo> todos = Maps.newHashMap();
-    private final AtomicInteger nextId = new AtomicInteger();
+    @VisibleForTesting
+    final AtomicInteger nextId = new AtomicInteger();
+
+    public TodoRepository() {
+        create(Todo.builder().text("Remember this!").done(false).build());
+        create(Todo.builder().text("Fuhgettaboutit.").done(true).build());
+    }
 
     public Todo create(Todo todo) {
         final Todo newTodo = todo.copy().id(nextId.incrementAndGet()).build();
@@ -23,7 +29,10 @@ public class TodoRepository {
     }
 
     public Optional<Todo> update(Todo todo) {
-        return get(todo.getId()).map(existingTodo -> todos.put(todo.getId(), existingTodo.copy().text(todo.getText()).build()));
+        return get(todo.getId()).map(existingTodo -> {
+            todos.put(todo.getId(), todo);
+            return todo;
+        });
     }
 
     public Optional<Todo> get(int id) {
