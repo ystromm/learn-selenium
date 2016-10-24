@@ -1,9 +1,12 @@
 <div class="container" ng-controller="todos">
     <ul>
         <li data-test-id="" ng-repeat="todo in todos">
-            {{todo.text}} <input type="checkbox" ng-click="done(todo)">
+            {{todo.text}} <input type="checkbox" ng-click="done(todo)"> <button ng-click="delete(todo)">Delete</button>
         </li>
     </ul>
     <input ng-model="text" type="text">
     <button data-test-id="add" ng-click="add()">Add</button>
+    <p>
+        {{error}}
+    </p>
 </div>

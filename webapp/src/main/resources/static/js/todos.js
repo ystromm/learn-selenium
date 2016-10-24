@@ -1,39 +1,60 @@
 (function () {
     "use strict";
-    angular.module("todos", ['ui.router'])
+    angular.module('todos', ['ui.router', 'ngResource'])
         .config(function ($stateProvider, $urlRouterProvider) {
 
             $urlRouterProvider.otherwise('/');
 
             $stateProvider
-                // HOME STATES AND NESTED VIEWS ========================================
                 .state('home', {
                     url: '/',
                     templateUrl: 'todos.html'
-                })
-                // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
-                .state('about', {
-                    // we'll get to this in a bit
                 });
         })
-        .controller("todos", function ($scope, TodosResource) {
-            $scope.todos = [];
+        .factory('TodosResource', function ($resource, TODOS_URL) {
+            return $resource(TODOS_URL + '/api/todo/:id', {}, {
+                update: {method: 'PUT'}
+            });
+        }).controller("todos", function ($scope, TodosResource) {
+        $scope.todos = [];
+
+        function getTodos() {
             TodosResource.query().$promise.then(function (todos) {
                 $scope.todos = todos;
                 $scope.error = undefined;
             }, function (error) {
                 $scope.error = error;
             });
-            $scope.add = function () {
-                $scope.todos.push({id: 0, text: $scope.text, done: false});
-            };
-            $scope.done = function (todo) {
-                todo.done = !todo.done;
-            };
-        }).factory('TodosResource', function ($resource, TODOS_URL) {
-        return $resource(TODOS_URL + '/api/todo/:id', {id: '@id'}, {
-            update: {method: 'PUT'}
-        });
+        }
+
+        $scope.add = function () {
+            var promise = TodosResource.save({text: $scope.text, done: false}).$promise;
+            promise.then(function (todo) {
+                    getTodos();
+                },
+                function (error) {
+                    $scope.error = error;
+                });
+        };
+
+        $scope.done = function (todo) {
+            todo.done = !todo.done;
+            todo.$save().then(function (result) {
+                    getTodos();
+                },
+                function (error) {
+                    $scope.error = error;
+                });
+        };
+
+        $scope.delete = function (todo) {
+            todo.$delete().then(function () {
+                getTodos();
+            }, function (error) {
+                $scope.error = error;
+            });
+        }
+
+        getTodos();
     });
-    ;
 }());

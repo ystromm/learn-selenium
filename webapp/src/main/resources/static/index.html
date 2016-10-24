@@ -14,6 +14,7 @@
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/webjars/angularjs/angular.js"></script>
+    <script type="text/javascript" src="/webjars/angularjs/angular-resource.js"></script>
     <script type="text/javascript" src="/webjars/angular-ui-router/angular-ui-router.js"></script>
     <script type="text/javascript" src="js/todos.js"></script>
 </head>
@@ -23,7 +24,7 @@
 </div>
 <script>
     angular.module('todos')
-            .constant('TODOS_URL', 'localhost:8081');
+            .constant('TODOS_URL', 'http://localhost:8081');
 </script>
 </body>
 </html>
