@@ -8,7 +8,10 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'application'
 apply plugin: 'spring-boot'
+
+mainClassName = 'com.github.ystromm.learn_selenium.webapp.WebappMain'
 
 repositories {
     jcenter()
@@ -16,9 +19,10 @@ repositories {
 
 dependencies {
     compileOnly "org.projectlombok:lombok:1.16.10"
-    compile project(':backend-api')
     compile "com.google.guava:guava:19.0"
     compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.webjars:webjars-locator"
     // testCompile "org.testng:testng:6.9.13.6"
+    compile 'org.webjars:angularjs:1.5.8'
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }
