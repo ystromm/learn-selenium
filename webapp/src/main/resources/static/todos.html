@@ -6,7 +6,7 @@
     </ul>
     <input ng-model="text" type="text">
     <button data-test-id="add" ng-click="add()">Add</button>
-    <p>
-        {{error}}
+    <p ng-if="error">
+        Error: {{error.status}} {{error.message}}
     </p>
 </div>

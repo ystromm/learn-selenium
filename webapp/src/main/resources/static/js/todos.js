@@ -17,13 +17,14 @@
             });
         }).controller("todos", function ($scope, TodosResource) {
         $scope.todos = [];
+        $scope.error = {message: ""};
 
         function getTodos() {
             TodosResource.query().$promise.then(function (todos) {
                 $scope.todos = todos;
                 $scope.error = undefined;
             }, function (error) {
-                $scope.error = error;
+                $scope.error = {message: ""};
             });
         }
 
