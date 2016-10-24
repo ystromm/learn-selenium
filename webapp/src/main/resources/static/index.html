@@ -9,20 +9,21 @@
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width"/>
     <base href="/"/>
-    <!-- <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/3.3.6/css/bootstrap.min.css"/> -->
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
-    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="css/style.css"/>-->
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/webjars/angularjs/angular.js"></script>
+    <script type="text/javascript" src="/webjars/angular-ui-router/angular-ui-router.js"></script>
     <script type="text/javascript" src="js/todos.js"></script>
 </head>
 <body ng-app="todos">
 <h1>Todos</h1>
-<div class="container" ng-controller="todos">
-<ul>
-    <li ng-repeat="todo in todos">
-        {{todo.text}}
-    </li>
-</ul>
+<div ui-view></div>
 </div>
+<script>
+    angular.module('todos')
+            .constant('TODOS_URL', 'localhost:8081');
+</script>
 </body>
 </html>
