@@ -24,13 +24,13 @@
                 $scope.todos = todos;
                 $scope.error = undefined;
             }, function (error) {
-                $scope.error = {message: ""};
+                $scope.error = error;
             });
         }
 
         $scope.add = function () {
-            var promise = TodosResource.save({text: $scope.text, done: false}).$promise;
-            promise.then(function (todo) {
+            TodosResource.save({text: $scope.text, done: false}).$promise.then(function () {
+                    $scope.text = "";
                     getTodos();
                 },
                 function (error) {

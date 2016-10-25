@@ -1,11 +1,12 @@
 <div class="container" ng-controller="todos">
+    <h1 data-test-id="todos_heading">Todos</h1>
     <ul>
-        <li data-test-id="" ng-repeat="todo in todos">
+        <li ng-repeat="todo in todos">
             {{todo.text}} <input type="checkbox" ng-click="done(todo)"> <button ng-click="delete(todo)">Delete</button>
         </li>
     </ul>
-    <input ng-model="text" type="text">
-    <button data-test-id="add" ng-click="add()">Add</button>
+    <input data-test-id="todos_add_input" ng-model="text" type="text">
+    <button data-test-id="todos_add_button" ng-click="add()">Add</button>
     <p ng-if="error">
         Error: {{error.status}} {{error.message}}
     </p>

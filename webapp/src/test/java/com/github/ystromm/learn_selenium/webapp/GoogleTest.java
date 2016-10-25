@@ -1,23 +1,22 @@
 package com.github.ystromm.learn_selenium.webapp;
 
-import com.google.common.io.Files;
-import com.google.common.primitives.Booleans;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.File;
 import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+@Ignore
 public class GoogleTest {
     private WebDriver webDriver;
 
@@ -29,10 +28,12 @@ public class GoogleTest {
     }
 
     @Test
-    public void xxx() {
-
-        // todo get
+    public void title_should_be_google() {
         assertThat(webDriver.getTitle(), equalTo("Google"));
+    }
+
+    @Test
+    public void search_for_should_set_title() {
         final WebElement searchField = webDriver.findElement(By.name("q"));
         searchField.sendKeys("Drupal!");
         searchField.submit();
@@ -48,16 +49,4 @@ public class GoogleTest {
         webDriver.quit();
     }
 
-    private static final class ScreenshotHelper {
-
-        public static void saveScreenshot(final WebDriver webDriver, final String screenshotFileName) throws IOException {
-            final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
-            Files.copy(screenshot, new File(screenshotFileName));
-        }
-
-        // hidden
-        private ScreenshotHelper() {
-            // empty
-        }
-    }
 }
