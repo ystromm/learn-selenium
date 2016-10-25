@@ -18,13 +18,14 @@ import java.io.IOException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class XxxTest {
+public class GoogleTest {
     private WebDriver webDriver;
 
     @Before
     public void openBrowser() {
+        System.setProperty("webdriver.chrome.driver", "./chromedriver.exe");
         webDriver = new ChromeDriver();
-        webDriver.get("www.google.se");
+        webDriver.get("http://www.google.se");
     }
 
     @Test
@@ -35,10 +36,10 @@ public class XxxTest {
         final WebElement searchField = webDriver.findElement(By.name("q"));
         searchField.sendKeys("Drupal!");
         searchField.submit();
-        final Boolean aBoolean = new WebDriverWait(webDriver, 10).<Boolean>until((ExpectedCondition<Boolean>) webDriver1 -> {
-            return webDriver1.getTitle().toLowerCase().startsWith("drupal!");
-        });
-        assertThat(aBoolean, equalTo(true));
+        // should have awaitility here
+        assertThat(new WebDriverWait(webDriver, 10).<Boolean>until((ExpectedCondition<Boolean>) providedWebDriver -> {
+            return providedWebDriver.getTitle().toLowerCase().startsWith("drupal!");
+        }), equalTo(true));
     }
 
     @After
