@@ -18,18 +18,18 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.projectlombok:lombok:1.16.10"
-    compile "com.google.guava:guava:19.0"
-    compile "org.springframework.boot:spring-boot-starter-web"
-    compile "org.webjars:webjars-locator"
-    // testCompile "org.testng:testng:6.9.13.6"
+    compileOnly 'org.projectlombok:lombok:1.16.10'
+    compile 'com.google.guava:guava:19.0'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.webjars:webjars-locator'
     runtime 'org.webjars:angularjs:1.5.8'
     runtime 'org.webjars:bootstrap:3.3.7-1'
     runtime 'org.webjars:jquery:3.1.1'
     runtime 'org.webjars:angular-ui-router:0.2.18'
+    testCompile project(':backend-impl')
     testCompile 'org.seleniumhq.selenium:selenium-java:3.0.1'
     testCompile 'org.awaitility:awaitility:2.0.0'
-    testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
