@@ -31,3 +31,7 @@ dependencies {
     testCompile 'org.awaitility:awaitility:2.0.0'
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }
+
+test {
+    systemProperty 'testReportDir', project.testReportDir
+}
