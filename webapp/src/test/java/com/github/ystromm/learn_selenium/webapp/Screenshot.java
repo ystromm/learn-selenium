@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 import java.io.File;
 import java.io.IOException;
 
-final class ScreenshotHelper {
+final class Screenshot {
 
     public static void saveScreenshot(final WebDriver webDriver, final String screenshotFileName) throws IOException {
         final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
@@ -16,7 +16,7 @@ final class ScreenshotHelper {
     }
 
     // hidden
-    private ScreenshotHelper() {
+    private Screenshot() {
         // empty
     }
 }
