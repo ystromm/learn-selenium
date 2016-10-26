@@ -2,10 +2,10 @@ language: java
 jdk:
   - oraclejdk8
 addons:
-  firefox: latest
+  firefox: 43.0
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 script:
-  - ./gradlew :webapp:cleanTest :webapp:test
+  - ./gradlew :test
