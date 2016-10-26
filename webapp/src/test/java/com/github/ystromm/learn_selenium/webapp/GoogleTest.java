@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -21,9 +20,9 @@ public class GoogleTest {
     private WebDriver webDriver;
 
     @Before
-    public void openBrowser() {
+    public void openBrowser() throws IOException {
         System.setProperty("webdriver.chrome.driver", "./chromedriver.exe");
-        webDriver = new FirefoxDriver();
+        webDriver = Firefox.firefoxDriver();
         webDriver.get("http://www.google.se");
     }
 
@@ -45,8 +44,7 @@ public class GoogleTest {
 
     @After
     public void saveScreenshotAndCloseBrowser() throws IOException {
-        ScreenshotHelper.saveScreenshot(webDriver, "screenshot.png");
+        Screenshot.saveScreenshot(webDriver, "screenshot.png");
         webDriver.quit();
     }
-
 }

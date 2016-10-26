@@ -1,7 +1,13 @@
 package com.github.ystromm.learn_selenium.webapp;
 
-/**
- * Created by canmt on 2016-10-26.
- */
-public class Travis {
+public final class Travis {
+
+    static boolean onTravis() {
+        return "true".equals(System.getenv().get("TRAVIS"));
+    }
+
+    // hidden
+    Travis() {
+        // empty
+    }
 }
