@@ -2,6 +2,7 @@ package com.github.ystromm.learn_selenium.webapp;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+@Ignore
 public class GoogleTest {
     private WebDriver webDriver;
 
