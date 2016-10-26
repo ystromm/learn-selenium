@@ -30,6 +30,7 @@ dependencies {
     testCompile 'org.seleniumhq.selenium:selenium-java:3.0.1'
     testCompile 'org.awaitility:awaitility:2.0.0'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'org.springframework.boot:spring-boot-starter-mustache'
 }
 
 test {

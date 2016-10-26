@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todos</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Demo</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <base href="/"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="css/style.css"/>-->
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/webjars/angularjs/angular.js"></script>
+    <script type="text/javascript" src="/webjars/angularjs/angular-resource.js"></script>
+    <script type="text/javascript" src="/webjars/angular-ui-router/angular-ui-router.js"></script>
+    <script type="text/javascript" src="js/todos.js"></script>
+</head>
+<body ng-app="todos">
+<p>local.server.port={{local.server.port}}</p>
+<div ui-view></div>
+</div>
+<script>
+    angular.module('todos')
+    .constant('TODOS_URL', "http://localhost:{{local.server.port}}");
+</script>
+</body>
+</html>

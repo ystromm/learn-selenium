@@ -2,18 +2,19 @@ package com.github.ystromm.learn_selenium.webapp;
 
 import com.github.ystromm.learn_selenium.backend_impl.BackendMain;
 import org.awaitility.Duration;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ThreadGuard;
 import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {WebappMain.class, BackendMain.class}, webEnvironment = RANDOM_PORT)
+@DirtiesContext
 public class AddTodoTest {
     @Rule
     public TestName testName = new TestName();
@@ -33,10 +35,9 @@ public class AddTodoTest {
     private int localServerPort;
     private WebDriver webDriver;
 
-
     @Before
     public void openBrowser() {
-        System.setProperty("webdriver.chrome.driver", "./chromedriver");
+        System.setProperty("webdriver.chrome.driver", "./chromedriver.exe");
         webDriver = new ChromeDriver();
         webDriver.get("http://localhost:" + localServerPort);
     }
@@ -44,7 +45,7 @@ public class AddTodoTest {
     @After
     public void tearDownWebDriver() throws IOException {
         final String testReportDir = System.getProperty("testReportDir");
-        // ScreenshotHelper.saveScreenshot(webDriver, testReportDir + "/" + testName.getMethodName() + "_screenshot.png");
+        ScreenshotHelper.saveScreenshot(webDriver, testReportDir + "/" + testName.getMethodName() + "_screenshot.png");
         webDriver.quit();
     }
 
