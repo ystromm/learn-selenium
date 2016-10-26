@@ -2,12 +2,11 @@ package com.github.ystromm.learn_selenium.webapp;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -16,14 +15,13 @@ import java.io.IOException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-@Ignore
 public class GoogleTest {
     private WebDriver webDriver;
 
     @Before
     public void openBrowser() {
         System.setProperty("webdriver.chrome.driver", "./chromedriver.exe");
-        webDriver = new ChromeDriver();
+        webDriver = new FirefoxDriver();
         webDriver.get("http://www.google.se");
     }
 
