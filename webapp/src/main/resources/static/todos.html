@@ -1,10 +1,10 @@
 <div class="container" ng-controller="todos">
     <h1 data-test-id="todos_heading">Todos</h1>
-    <ul data-test-id="todos_item">
-        <li data-test-id="todos_item_{{$index}}" ng-repeat="todo in todos">
-            <span data-test-id="todos_item_text_{{$index}}">{{todo.text}}</span>
-            <input data-test-id="todos_item_done_checkbox_{{$index}}" type="checkbox" ng-click="done(todo)">
-            <button data-test-id="todos_item_delete_button_{{$index}}" ng-click="delete(todo)">Delete</button>
+    <ul data-test-id="todos_items">
+        <li data-test-id="todos_items_item" ng-repeat="todo in todos">
+            <span data-test-id="todos_items_item_text">{{todo.text}}</span>
+            <input data-test-id="todos_items_item_done_checkbox" type="checkbox" ng-click="done(todo)">
+            <button data-test-id="todos_items_item_delete_button" ng-click="delete(todo)">Delete</button>
         </li>
     </ul>
     <input data-test-id="todos_add_input" ng-model="text" type="text">

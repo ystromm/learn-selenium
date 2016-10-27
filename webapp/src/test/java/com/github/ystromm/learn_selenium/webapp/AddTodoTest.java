@@ -15,11 +15,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 
+import static com.github.ystromm.learn_selenium.webapp.Bys.byTestId;
 import static com.github.ystromm.learn_selenium.webapp.Screenshot.screenshot;
+import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.withText;
+import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.withValue;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.isEmptyString;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -34,7 +41,7 @@ public class AddTodoTest {
 
     @Before
     public void openBrowser() throws IOException {
-        System.setProperty("webdriver.chrome.driver", "./chromedriver.exe");
+        // System.setProperty("webdriver.chrome.driver", "./chromedriver.exe");
         webDriver = Firefox.firefoxDriver();
         webDriver.get("http://localhost:" + localServerPort);
     }
@@ -46,28 +53,32 @@ public class AddTodoTest {
     }
 
     @Test
-    public void title_should_be_todos() {
-        assertThat(webDriver.getTitle(), equalTo("Todos"));
-    }
-
-    @Test
-    public void heading_should_be_todos() {
-        assertThat(webDriver.findElement(Bys.byTestId("todos_heading")).getText(), equalTo("Todos"));
-    }
-
-    @Test
-    public void error_should_not_be_displayed() {
-        assertThat(webDriver.findElement(Bys.byTestId("todos_error")).isDisplayed(), equalTo(false));
-    }
-
-    @Test
     public void add_should_clear_text() {
-        final WebElement todos_add_input = webDriver.findElement(Bys.byTestId("todos_add_input"));
-        final WebElement todos_add_button = webDriver.findElement(Bys.byTestId("todos_add_button"));
-        todos_add_input.sendKeys("To do item");
-        todos_add_button.click();
-        await().atMost(Duration.ONE_SECOND).until(() -> assertThat(todos_add_input.getAttribute("value"), isEmptyString()));
+        addTodoItem("To do!");
+        await().atMost(Duration.ONE_SECOND).until(() ->
+                assertThat(webDriver.findElement(byTestId("todos_add_input")), withValue(isEmptyString())));
     }
 
+    @Test
+    public void add_should_add_an_item() {
+        final List<WebElement> todos_items_item_before = webDriver.findElements(byTestId("todos_items_item"));
+        addTodoItem("To do!");
+        await().atMost(Duration.ONE_SECOND).until(() ->
+                assertThat(webDriver.findElements(byTestId("todos_items_item")), hasSize(todos_items_item_before.size() + 1)));
+    }
 
+    @Test
+    public void add_should_add_an_item_with_the_given_text() {
+        final String text = "To do item " + new Random().nextInt();
+        addTodoItem(text);
+        await().atMost(Duration.ONE_SECOND).until(() ->
+                assertThat(webDriver.findElements(byTestId("todos_items_item_text")), hasItem(withText(equalTo(text)))));
+    }
+
+    private void addTodoItem(String text) {
+        final WebElement todos_add_input = webDriver.findElement(byTestId("todos_add_input"));
+        final WebElement todos_add_button = webDriver.findElement(byTestId("todos_add_button"));
+        todos_add_input.sendKeys(text);
+        todos_add_button.click();
+    }
 }

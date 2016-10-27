@@ -12,7 +12,7 @@ import java.io.IOException;
 final class Screenshot {
 
     static void screenshot(WebDriver webDriver, TestName testName) throws IOException {
-        final String testReportDir = System.getProperty("testReportDir");
+        final String testReportDir = System.getProperty("testReportDir", ".");
         saveScreenshot(webDriver, testReportDir + "/" + testName.getMethodName() + "_screenshot.png");
     }
 
