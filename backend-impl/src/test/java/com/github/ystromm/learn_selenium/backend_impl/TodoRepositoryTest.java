@@ -9,6 +9,7 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 
 public class TodoRepositoryTest {
@@ -30,12 +31,23 @@ public class TodoRepositoryTest {
     }
 
     @Test
-    public void update_should_return_todo() {
+    public void update_should_return_todo_with_updated_text() {
         final int nextId = nextId();
         final Todo createdTodo = todoRepository.create(Todo.builder().id(nextId).text("").done(false).build());
         assertThat(todoRepository.update(createdTodo.copy().text(UPDATED_TEXT).build()),
                 equalTo(Optional.of(Todo.builder().id(nextId).text(UPDATED_TEXT).done(false).build())));
+        assertThat(todoRepository.getAll(), hasSize(1));
     }
+
+    @Test
+    public void update_should_return_todo_with_updated_done() {
+        final int nextId = nextId();
+        final Todo createdTodo = todoRepository.create(Todo.builder().id(nextId).text(TO_DO).done(false).build());
+        assertThat(todoRepository.update(createdTodo.copy().done(true).build()),
+                equalTo(Optional.of(Todo.builder().id(nextId).text(TO_DO).done(true).build())));
+        assertThat(todoRepository.getAll(), hasSize(1));
+    }
+
 
     @Test
     public void create_should_return_todo_with_id_not_zero() {

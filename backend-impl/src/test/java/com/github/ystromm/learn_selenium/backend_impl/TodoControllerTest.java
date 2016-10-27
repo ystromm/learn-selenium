@@ -7,15 +7,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestClientException;
-
-import java.util.concurrent.ExecutionException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.emptyArray;
@@ -78,18 +74,31 @@ public class TodoControllerTest {
     }
 
     @Test
-    public void put_should_return_not_found() {
-        testRestTemplate.put("/api/todo/{id}", Todo.builder().id(ID).text(FUHGETTABOUTIT).build(), ID);
-    }
-
-    @Test
-    public void put_should_return_updated() {
+    public void put_should_return_updated_text() {
         final ResponseEntity<Todo> postResponseEntity = testRestTemplate.postForEntity("/api/todo", todo(), Todo.class);
         final Todo todo = postResponseEntity.getBody();
         testRestTemplate.put("/api/todo/{id}", todo.copy().text(FUHGETTABOUTIT).build(), todo.getId());
         final ResponseEntity<Todo> getResponseEntity = testRestTemplate.getForEntity("/api/todo/{id}", Todo.class, todo.getId());
         assertThat(getResponseEntity.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(getResponseEntity.getBody().getText(), equalTo(FUHGETTABOUTIT));
+    }
+
+    @Test
+    public void put_should_return_updated_done() {
+        final ResponseEntity<Todo> postResponseEntity = testRestTemplate.postForEntity("/api/todo", todo(), Todo.class);
+        final Todo todo = postResponseEntity.getBody();
+        testRestTemplate.put("/api/todo/{id}", todo.copy().done(true).build(), todo.getId());
+        final ResponseEntity<Todo> getResponseEntity = testRestTemplate.getForEntity("/api/todo/{id}", Todo.class, todo.getId());
+        assertThat(getResponseEntity.getStatusCode(), equalTo(HttpStatus.OK));
+        assertThat(getResponseEntity.getBody().isDone(), equalTo(true));
+    }
+
+    @Test
+    public void put_should_return_not_found() {
+        final Todo todo = Todo.builder().id(42).text(FUHGETTABOUTIT).build();
+        testRestTemplate.put("/api/todo/{id}", todo, todo.getId());
+        final ResponseEntity<Todo> getResponseEntity = testRestTemplate.getForEntity("/api/todo/{id}", Todo.class, todo.getId());
+        assertThat(getResponseEntity.getStatusCode(), equalTo(HttpStatus.NOT_FOUND));
     }
 
     private static Todo todo() {
