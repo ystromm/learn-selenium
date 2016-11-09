@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 
 public final class Bys {
 
-    static By byTestId(String value) {
+    public static By byTestId(String value) {
         return By.cssSelector("*[data-test-id='" + value + "']");
     }
 

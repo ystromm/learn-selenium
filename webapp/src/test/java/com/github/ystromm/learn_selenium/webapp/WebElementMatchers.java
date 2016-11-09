@@ -47,11 +47,11 @@ public final class WebElementMatchers {
         };
     }
 
-    public static Matcher<WebElement> displayed() {
-        return displayed(true);
+    public static Matcher<WebElement> isDisplayed() {
+        return isDisplayed(true);
     }
 
-    public static Matcher<WebElement> displayed(boolean isDisplayed) {
+    public static Matcher<WebElement> isDisplayed(boolean isDisplayed) {
         return new FeatureMatcher<WebElement, Boolean>(equalTo(isDisplayed), "isDisplayed", "isDisplayed") {
 
             @Override

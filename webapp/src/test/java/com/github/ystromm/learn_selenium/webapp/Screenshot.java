@@ -17,8 +17,10 @@ final class Screenshot {
     }
 
     public static void saveScreenshot(final WebDriver webDriver, final String screenshotFileName) throws IOException {
-        final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
-        Files.copy(screenshot, new File(screenshotFileName));
+        if (WebDriverUtil.isConnected(webDriver)) {
+            final File screenshot = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+            Files.copy(screenshot, new File(screenshotFileName));
+        }
     }
 
     // hidden

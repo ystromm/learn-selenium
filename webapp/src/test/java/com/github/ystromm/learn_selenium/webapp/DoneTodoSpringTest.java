@@ -40,6 +40,12 @@ public class DoneTodoSpringTest {
         webDriver.get("http://localhost:" + localServerPort);
     }
 
+    @Before
+    public void setUpBackend() {
+        System.setProperty(PropertyNames.BACKEND_SERVER_PORT, Integer.toString(localServerPort));
+    }
+
+
     @After
     public void tearDownWebDriver() throws IOException {
         screenshot(webDriver, testName);

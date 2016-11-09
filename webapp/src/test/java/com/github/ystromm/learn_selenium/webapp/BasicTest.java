@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 
 import static com.github.ystromm.learn_selenium.webapp.Screenshot.screenshot;
-import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.displayed;
+import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.isDisplayed;
 import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.withText;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -56,6 +56,6 @@ public class BasicTest {
 
     @Test
     public void error_should_not_be_displayed() {
-        assertThat(webDriver.findElement(Bys.byTestId("todos_error")), not(displayed()));
+        assertThat(webDriver.findElement(Bys.byTestId("todos_error")), not(isDisplayed()));
     }
 }

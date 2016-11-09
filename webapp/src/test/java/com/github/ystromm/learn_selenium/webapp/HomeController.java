@@ -14,7 +14,7 @@ public class HomeController {
 
     @GetMapping("/")
     String index(Map<String, Object> model) {
-        model.put("local.server.port", environment.getProperty("local.server.port"));
+        model.put("backend.server.port", System.getProperty("backend.server.port"));
         return "index";
     }
 }

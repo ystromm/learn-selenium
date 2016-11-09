@@ -10,6 +10,10 @@
     <input data-test-id="todos_add_input" ng-model="text" type="text">
     <button data-test-id="todos_add_button" ng-click="add()">Add</button>
     <p data-test-id="todos_error" ng-show="error">
-        Error: {{error.status}} {{error.message}}
+        Error: <span data-test-id="todos_error_status">{{error.status}}</span>
+        <span data-test-id="todos_error_message">{{error.statusMessage}}</span>
+    </p>
+    <p>
+       error={{error}}
     </p>
 </div>
