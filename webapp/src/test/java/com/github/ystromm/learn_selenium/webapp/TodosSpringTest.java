@@ -26,7 +26,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {WebappMain.class, BackendMain.class}, webEnvironment = RANDOM_PORT)
-public class DoneTodoSpringTest {
+public class TodosSpringTest {
     @Rule
     public TestName testName = new TestName();
     @LocalServerPort
