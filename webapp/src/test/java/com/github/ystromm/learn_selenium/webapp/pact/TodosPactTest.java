@@ -12,10 +12,7 @@ import com.github.ystromm.learn_selenium.webapp.webdriver.Firefox;
 import com.github.ystromm.learn_selenium.webapp.WebappMain;
 import com.github.ystromm.learn_selenium.webapp.pages.TodosPage;
 import org.apache.http.entity.ContentType;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -74,6 +71,7 @@ public class TodosPactTest {
     }
 
 
+    @Ignore("work in progress")
     @Test
     @PactVerification
     public void open_should_show_todos() {

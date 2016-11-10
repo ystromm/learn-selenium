@@ -4,10 +4,7 @@ import com.github.ystromm.learn_selenium.backend_impl.BackendMain;
 import com.github.ystromm.learn_selenium.webapp.WebappMain;
 import com.github.ystromm.learn_selenium.webapp.webdriver.Bys;
 import com.github.ystromm.learn_selenium.webapp.webdriver.Firefox;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -57,6 +54,7 @@ public class BasicTest {
         assertThat(webDriver.findElement(Bys.byTestId("todos_heading")), withText(equalTo("Todos")));
     }
 
+    @Ignore("work in progress")
     @Test
     public void error_should_not_be_displayed() {
         assertThat(webDriver.findElement(Bys.byTestId("todos_error")), not(isDisplayed()));

@@ -8,10 +8,7 @@ import com.github.ystromm.learn_selenium.webapp.WebappMain;
 import com.github.ystromm.learn_selenium.webapp.pages.TodosPage;
 import com.github.ystromm.learn_selenium.webapp.webdriver.Bys;
 import com.github.ystromm.learn_selenium.webapp.webdriver.Firefox;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -90,6 +87,7 @@ public class TodosSpringTest {
         assertThat(todosPage.getError(), not(isDisplayed()));
     }
 
+    @Ignore("work in progress")
     @Test
     public void open_should_show_no_todos() {
         when(todoRepository.getAll()).thenReturn(emptyList());
@@ -113,6 +111,7 @@ public class TodosSpringTest {
         assertThat(todosPage.getError(), isDisplayed());
     }
 
+    @Ignore("work in progress")
     @Test
     public void click_checkbox_should_update() {
         when(todoRepository.getAll()).thenReturn(singletonList(todo()));
@@ -137,6 +136,7 @@ public class TodosSpringTest {
         return Todo.builder().id(1).text("To do!").done(done).build();
     }
 
+    @Ignore("work in progress")
     @Test
     public void check_done_should_not_add_items() {
         addTodoItem();

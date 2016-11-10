@@ -4,10 +4,7 @@ import com.github.ystromm.learn_selenium.backend_impl.BackendMain;
 import com.github.ystromm.learn_selenium.webapp.WebappMain;
 import com.github.ystromm.learn_selenium.webapp.webdriver.Firefox;
 import org.awaitility.Duration;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -54,6 +51,7 @@ public class AddTodoTest {
         webDriver.quit();
     }
 
+    @Ignore("work in progress")
     @Test
     public void add_should_clear_text() {
         addTodoItem("To do!");
@@ -61,6 +59,7 @@ public class AddTodoTest {
                 assertThat(webDriver.findElement(byTestId("todos_add_input")), withValue(isEmptyString())));
     }
 
+    @Ignore("work in progress")
     @Test
     public void add_should_add_an_item() {
         final List<WebElement> todos_items_item_before = webDriver.findElements(byTestId("todos_items_item"));
@@ -69,6 +68,7 @@ public class AddTodoTest {
                 assertThat(webDriver.findElements(byTestId("todos_items_item")), hasSize(todos_items_item_before.size() + 1)));
     }
 
+    @Ignore("work in progress")
     @Test
     public void add_should_add_an_item_with_the_given_text() {
         final String text = "To do item " + new Random().nextInt();
