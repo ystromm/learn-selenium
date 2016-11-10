@@ -12,6 +12,7 @@ import org.junit.*;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.internal.verification.Times;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.github.ystromm.learn_selenium.webapp.spring.Todos.checkedTodo;
+import static com.github.ystromm.learn_selenium.webapp.spring.Todos.todo;
 import static com.github.ystromm.learn_selenium.webapp.webdriver.Screenshot.screenshot;
 import static com.github.ystromm.learn_selenium.webapp.webdriver.WebElementMatchers.isDisplayed;
 import static java.util.Collections.emptyList;
@@ -77,7 +80,9 @@ public class TodosSpringTest {
     public void open_should_get_todos() {
         when(todoRepository.getAll()).thenReturn(emptyList());
         todosPage.open();
-        verify(todoRepository).getAll();
+        await().atMost(ONE_SECOND).until(() ->
+                verify(todoRepository).getAll()
+        );
     }
 
     @Test
@@ -87,13 +92,13 @@ public class TodosSpringTest {
         assertThat(todosPage.getError(), not(isDisplayed()));
     }
 
-    @Ignore("work in progress")
     @Test
     public void open_should_show_no_todos() {
         when(todoRepository.getAll()).thenReturn(emptyList());
         todosPage.open();
-        await().atLeast(ONE_SECOND).until(() ->
-                assertThat(todosPage.getTodoItems(), empty()));
+        await().atMost(ONE_SECOND).until(() ->
+                assertThat(todosPage.getTodoItems(), empty())
+        );
     }
 
     @Test
@@ -101,7 +106,8 @@ public class TodosSpringTest {
         when(todoRepository.getAll()).thenReturn(singletonList(todo()));
         todosPage.open();
         await().atMost(ONE_SECOND).until(() ->
-                assertThat(todosPage.getTodoItems(), hasSize(1)));
+                assertThat(todosPage.getTodoItems(), hasSize(1))
+        );
     }
 
     @Test
@@ -111,47 +117,76 @@ public class TodosSpringTest {
         assertThat(todosPage.getError(), isDisplayed());
     }
 
-    @Ignore("work in progress")
+    @Test
+    public void add_should_create() {
+        final Todo todo = Todo.builder().text("To do!").build();
+        when(todoRepository.getAll()).thenReturn(emptyList());
+        when(todoRepository.create(Mockito.any(Todo.class))).thenReturn(todo());
+        todosPage.open();
+        todosPage.addTodoItem(todo.getText());
+        await().atMost(ONE_SECOND).until(() ->
+                verify(todoRepository).create(todo)
+        );
+    }
+
+    @Test
+    public void add_should_getAll_twice() {
+        final Todo todo = Todo.builder().text("To do!").build();
+        when(todoRepository.getAll()).thenReturn(emptyList());
+        when(todoRepository.create(Mockito.any(Todo.class))).thenReturn(todo());
+        todosPage.open();
+        todosPage.addTodoItem(todo.getText());
+        await().atMost(ONE_SECOND).until(() ->
+                verify(todoRepository, times(2)).getAll()
+        );
+    }
+
+    @Ignore("Fails on purpose")
     @Test
     public void click_checkbox_should_update() {
         when(todoRepository.getAll()).thenReturn(singletonList(todo()));
-        when(todoRepository.update(Mockito.any(Todo.class))).thenReturn(Optional.of(checkedTodo()));
+        when(todoRepository.update(checkedTodo())).thenReturn(Optional.of(checkedTodo()));
         todosPage.open();
         await().atMost(ONE_SECOND).until(() ->
                 assertThat(todosPage.getTodoItems(), hasSize(1)));
         todosPage.clickFirstCheckbox();
-        await().atMost(ONE_SECOND).until(() ->
-                verify(todoRepository).update(checkedTodo()));
+        verify(todoRepository).update(checkedTodo());
     }
 
-    private static Todo todo() {
-        return todo(false);
-    }
-
-    private static Todo checkedTodo() {
-        return todo(true);
-    }
-
-    private static Todo todo(boolean done) {
-        return Todo.builder().id(1).text("To do!").done(done).build();
-    }
-
-    @Ignore("work in progress")
     @Test
-    public void check_done_should_not_add_items() {
-        addTodoItem();
-        final List<WebElement> todos_items_item_done_checkbox_before = webDriver.findElements(Bys.byTestId("todos_items_item_done_checkbox"));
-        todos_items_item_done_checkbox_before.get(0).click();
-        await().atMost(ONE_SECOND).until(() -> {
-                    assertThat(webDriver.findElements(Bys.byTestId("todos_items_item_done_checkbox")), hasSize(todos_items_item_done_checkbox_before.size()));
-                }
-        );
+    public void click_checkbox_should_getAll_twice() {
+        when(todoRepository.getAll()).thenReturn(singletonList(todo()));
+        when(todoRepository.update(checkedTodo())).thenReturn(Optional.of(checkedTodo()));
+        todosPage.open();
+        await().atMost(ONE_SECOND).until(() ->
+                assertThat(todosPage.getTodoItems(), hasSize(1)));
+        todosPage.clickFirstCheckbox();
+        verify(todoRepository, times(2)).getAll();
     }
 
-    private void addTodoItem() {
-        final WebElement todos_add_input = webDriver.findElement(Bys.byTestId("todos_add_input"));
-        final WebElement todos_add_button = webDriver.findElement(Bys.byTestId("todos_add_button"));
-        todos_add_input.sendKeys("To do item");
-        todos_add_button.click();
+
+    @Test
+    public void click_delete_should_remove() {
+        final Todo todo = todo();
+        when(todoRepository.getAll()).thenReturn(singletonList(todo));
+        when(todoRepository.remove(todo.getId())).thenReturn(Optional.of(todo));
+        todosPage.open();
+        await().atMost(ONE_SECOND).until(() ->
+                assertThat(todosPage.getTodoItems(), hasSize(1)));
+        todosPage.clickFirstDelete();
+        verify(todoRepository).remove(todo.getId());
+    }
+
+    @Ignore("Fails on purpose")
+    @Test
+    public void click_delete_should_getAll_twice() {
+        final Todo todo = todo();
+        when(todoRepository.getAll()).thenReturn(singletonList(todo));
+        when(todoRepository.remove(todo.getId())).thenReturn(Optional.of(todo));
+        todosPage.open();
+        await().atMost(ONE_SECOND).until(() ->
+                assertThat(todosPage.getTodoItems(), hasSize(1)));
+        todosPage.clickFirstDelete();
+        verify(todoRepository, times(2)).getAll();
     }
 }

@@ -1,0 +1,39 @@
+{
+    "provider": {
+        "name": "test_provider"
+    },
+    "consumer": {
+        "name": "test_consumer"
+    },
+    "interactions": [
+        {
+            "description": "ExampleJavaConsumerPactRuleTest test interaction",
+            "request": {
+                "method": "GET",
+                "path": "/api/todo"
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+                "body": [
+                    {
+                        "done": false,
+                        "id": 1,
+                        "text": "To do!"
+                    }
+                ]
+            },
+            "providerState": "test state"
+        }
+    ],
+    "metadata": {
+        "pact-specification": {
+            "version": "2.0.0"
+        },
+        "pact-jvm": {
+            "version": "3.3.2"
+        }
+    }
+}

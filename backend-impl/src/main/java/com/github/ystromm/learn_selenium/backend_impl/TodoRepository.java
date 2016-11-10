@@ -43,7 +43,7 @@ public class TodoRepository {
         return ImmutableList.copyOf(todos.values());
     }
 
-    public void remove(int id) {
-        todos.remove(id);
+    public Optional<Todo> remove(int id) {
+        return Optional.of(todos.remove(id));
     }
 }

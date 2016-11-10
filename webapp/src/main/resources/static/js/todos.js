@@ -40,7 +40,8 @@
 
         $scope.done = function (todo) {
             todo.done = !todo.done;
-            todo.$save().then(function (result) {
+            // bug replace update with save
+            TodosResource.save(todo).$promise.then(function (result) {
                     getTodos();
                 },
                 function (error) {
@@ -49,7 +50,7 @@
         };
 
         $scope.delete = function (todo) {
-            todo.$delete().then(function () {
+            TodosResource.delete(todo).then(function () {
                 getTodos();
             }, function (error) {
                 $scope.error = error;

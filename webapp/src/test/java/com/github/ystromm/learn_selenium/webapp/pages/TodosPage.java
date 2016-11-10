@@ -45,8 +45,13 @@ public class TodosPage {
     }
 
     public void clickFirstCheckbox() {
-        final List<WebElement> todos_items_item_done_checkbox_before = webDriver.findElements(Bys.byTestId("todos_items_item_done_checkbox"));
-        todos_items_item_done_checkbox_before.get(0).click();
+        final List<WebElement> todos_items_item_done_checkboxes = webDriver.findElements(Bys.byTestId("todos_items_item_done_checkbox"));
+        todos_items_item_done_checkboxes.get(0).click();
 
+    }
+
+    public void clickFirstDelete() {
+        final List<WebElement> todos_items_item_delete_buttons = webDriver.findElements(Bys.byTestId("todos_items_item_delete_button"));
+        todos_items_item_delete_buttons.get(0).click();
     }
 }

@@ -30,7 +30,7 @@ public class TodoController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<Todo> get() {
+    public Collection<Todo> getAll() {
         return todoRepository.getAll();
     }
 
@@ -46,9 +46,6 @@ public class TodoController {
 
     @RequestMapping(value = ID, method = RequestMethod.DELETE)
     public void delete(@PathVariable int id) {
-        todoRepository.get(id).map(todo -> {
-            todoRepository.remove(id);
-            return todo;
-        }).orElseThrow(() -> new NotFoundexception());
+        todoRepository.remove(id).orElseThrow(() -> new NotFoundexception());
     }
 }
