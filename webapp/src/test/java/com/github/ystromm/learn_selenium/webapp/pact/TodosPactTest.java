@@ -12,6 +12,8 @@ import com.github.ystromm.learn_selenium.webapp.webdriver.Firefox;
 import com.github.ystromm.learn_selenium.webapp.WebappMain;
 import com.github.ystromm.learn_selenium.webapp.pages.TodosPage;
 import org.apache.http.entity.ContentType;
+import org.awaitility.Awaitility;
+import org.awaitility.Duration;
 import org.junit.*;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
@@ -27,6 +29,7 @@ import java.util.List;
 import static com.github.ystromm.learn_selenium.webapp.PropertyNames.BACKEND_SERVER_PORT;
 import static com.github.ystromm.learn_selenium.webapp.PropertyNames.TODOS_URL;
 import static com.github.ystromm.learn_selenium.webapp.webdriver.Screenshot.screenshot;
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -63,20 +66,19 @@ public class TodosPactTest {
         webDriver.quit();
     }
 
+    @Ignore("work in progress")
     @Test
     @PactVerification
     public void open_should_get_todos() {
         todosPage.open();
-        // verify GET api/todo
     }
-
 
     @Ignore("work in progress")
     @Test
     @PactVerification
     public void open_should_show_todos() {
         todosPage.open();
-        assertThat(todosPage.getTodoItems(), hasSize(1));
+        await().atMost(Duration.ONE_SECOND).until(() -> assertThat(todosPage.getTodoItems(), hasSize(1)));
     }
 
     @Pact(consumer="test_consumer") // will default to the provider name from mockProvider
