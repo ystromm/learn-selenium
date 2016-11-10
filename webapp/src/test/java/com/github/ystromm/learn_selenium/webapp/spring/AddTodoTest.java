@@ -1,6 +1,8 @@
-package com.github.ystromm.learn_selenium.webapp;
+package com.github.ystromm.learn_selenium.webapp.spring;
 
 import com.github.ystromm.learn_selenium.backend_impl.BackendMain;
+import com.github.ystromm.learn_selenium.webapp.WebappMain;
+import com.github.ystromm.learn_selenium.webapp.webdriver.Firefox;
 import org.awaitility.Duration;
 import org.junit.After;
 import org.junit.Before;
@@ -18,10 +20,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-import static com.github.ystromm.learn_selenium.webapp.Bys.byTestId;
-import static com.github.ystromm.learn_selenium.webapp.Screenshot.screenshot;
-import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.withText;
-import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.withValue;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.Bys.byTestId;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.Screenshot.screenshot;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.WebElementMatchers.withText;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.WebElementMatchers.withValue;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -48,7 +50,7 @@ public class AddTodoTest {
 
     @After
     public void tearDownWebDriver() throws IOException {
-        screenshot(webDriver, testName);
+        screenshot(webDriver, testName.getMethodName());
         webDriver.quit();
     }
 

@@ -17,7 +17,7 @@
             });
         }).controller("todos", function ($scope, TodosResource) {
         $scope.todos = [];
-        $scope.error = {message: ""};
+        $scope.error = undefined;
 
         function getTodos() {
             TodosResource.query().$promise.then(function (todos) {

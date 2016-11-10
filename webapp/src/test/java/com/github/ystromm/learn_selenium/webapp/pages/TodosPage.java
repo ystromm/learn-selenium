@@ -1,17 +1,24 @@
 package com.github.ystromm.learn_selenium.webapp.pages;
 
+import com.github.ystromm.learn_selenium.webapp.webdriver.Bys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-import static com.github.ystromm.learn_selenium.webapp.Bys.byTestId;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.Bys.byTestId;
 
 public class TodosPage {
     private final WebDriver webDriver;
+    private final String baseUrl;
 
-    public TodosPage(WebDriver webDriver) {
+    public TodosPage(WebDriver webDriver, String baseUrl) {
         this.webDriver = webDriver;
+        this.baseUrl = baseUrl;
+    }
+
+    public void open() {
+        webDriver.get(baseUrl);
     }
 
     public WebElement getError() {
@@ -35,5 +42,11 @@ public class TodosPage {
 
     public List<WebElement> getTodoItems() {
         return webDriver.findElements(byTestId("todos_items_item"));
+    }
+
+    public void clickFirstCheckbox() {
+        final List<WebElement> todos_items_item_done_checkbox_before = webDriver.findElements(Bys.byTestId("todos_items_item_done_checkbox"));
+        todos_items_item_done_checkbox_before.get(0).click();
+
     }
 }

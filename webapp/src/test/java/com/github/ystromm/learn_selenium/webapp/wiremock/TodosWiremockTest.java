@@ -1,8 +1,11 @@
-package com.github.ystromm.learn_selenium.webapp;
+package com.github.ystromm.learn_selenium.webapp.wiremock;
 
 import com.github.tomakehurst.wiremock.common.Json;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.ystromm.learn_selenium.backend_api.Todo;
+import com.github.ystromm.learn_selenium.webapp.webdriver.Firefox;
+import com.github.ystromm.learn_selenium.webapp.PropertyNames;
+import com.github.ystromm.learn_selenium.webapp.WebappMain;
 import com.github.ystromm.learn_selenium.webapp.pages.TodosPage;
 import org.awaitility.Duration;
 import org.junit.After;
@@ -21,11 +24,11 @@ import java.util.Arrays;
 import java.util.Random;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.github.ystromm.learn_selenium.webapp.Bys.byTestId;
-import static com.github.ystromm.learn_selenium.webapp.Screenshot.screenshot;
-import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.isDisplayed;
-import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.withText;
-import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.withValue;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.Bys.byTestId;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.Screenshot.screenshot;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.WebElementMatchers.isDisplayed;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.WebElementMatchers.withText;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.WebElementMatchers.withValue;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -51,7 +54,7 @@ public class TodosWiremockTest {
     public void setUpWebDriver() throws IOException {
         // System.setProperty("webdriver.chrome.driver", "./chromedriver.exe");
         webDriver = Firefox.firefoxDriver();
-        todosPage = new TodosPage(webDriver);
+        todosPage = new TodosPage(webDriver, "http://localhost:" + localServerPort);
     }
 
     @Before
@@ -67,25 +70,26 @@ public class TodosWiremockTest {
     @Before
     public void setUpBackendServerPort() {
         System.setProperty(PropertyNames.BACKEND_SERVER_PORT, Integer.toString(todosService.port()));
+        System.setProperty(PropertyNames.TODOS_URL, "http://localhost:" + Integer.toString(todosService.port()));
     }
 
     @After
     public void tearDownWebDriver() throws IOException {
-        screenshot(webDriver, testName);
+        screenshot(webDriver, getClass().getSimpleName() + "_" + testName.getMethodName());
         webDriver.quit();
     }
 
     @Test
-    public void open_should_get_todos() {
+    public void open_should_get_apiTodos() {
         stubForApiTodoWillReturnTodos();
-        openTodosPage();
+        todosPage.open();
         verify(getRequestedFor(urlEqualTo(API_TODO)));
     }
 
     @Test
     public void open_should_show_no_todos() {
         stubForApiTodoWillReturnTodos();
-        openTodosPage();
+        todosPage.open();
         assertThat(todosPage.getTodoItems(), empty());
     }
 
@@ -93,21 +97,21 @@ public class TodosWiremockTest {
     public void open_should_show_one_todo() {
         final Todo todo = Todo.builder().id(1).text("Text").done(false).build();
         stubForApiTodoWillReturnTodos(todo);
-        openTodosPage();
+        todosPage.open();
         assertThat(todosPage.getTodoItems(), hasSize(1));
     }
 
     @Test
     public void open_should_show_error() {
         stubForApiTodoWillReturnError();
-        openTodosPage();
+        todosPage.open();
         assertThat(todosPage.getError(), isDisplayed());
     }
 
     @Test
     public void add_should_clear_text() {
         stubForApiTodoWillReturnTodos();
-        openTodosPage();
+        todosPage.open();
         todosPage.addTodoItem("To do!");
         await().atMost(Duration.ONE_SECOND).until(() ->
                 assertThat(webDriver.findElement(byTestId("todos_add_input")), withValue(isEmptyString())));
@@ -116,7 +120,7 @@ public class TodosWiremockTest {
     @Test
     public void add_should_post() {
         stubForApiTodoWillReturnTodos();
-        openTodosPage();
+        todosPage.open();
         todosPage.addTodoItem("To do!");
         verify(postRequestedFor(urlEqualTo(API_TODO)));
     }
@@ -125,7 +129,7 @@ public class TodosWiremockTest {
     @Test
     public void add_should_add_an_item() {
         stubForApiTodoWillReturnTodos();
-        openTodosPage();
+        todosPage.open();
         await().atMost(Duration.ONE_SECOND).until(() ->
                 assertThat(todosPage.getTodoItems(), empty()));
         final Todo todo = Todo.builder().id(1).text("Some text").done(false).build();
@@ -144,7 +148,7 @@ public class TodosWiremockTest {
     @Test
     public void add_should_add_an_item_with_the_given_text() {
         stubForApiTodoWillReturnTodos();
-        openTodosPage();
+        todosPage.open();
         final String text = "To do item " + new Random().nextInt();
         final Todo todo = Todo.builder().id(1).text(text).done(false).build();
         todosService.stubFor(post(urlEqualTo(API_TODO)).willReturn(aResponse()
@@ -162,7 +166,7 @@ public class TodosWiremockTest {
     @Test
     public void open_should_show_error_status() {
         stubForApiTodoWillReturnError();
-        openTodosPage();
+        todosPage.open();
         assertThat(todosPage.getErrorStatus(), withText("401"));
     }
 
@@ -170,7 +174,7 @@ public class TodosWiremockTest {
     @Test
     public void open_should_show_error_message() {
         stubForApiTodoWillReturnError();
-        openTodosPage();
+        todosPage.open();
         assertThat(todosPage.getErrorMessage(), withText(ERROR_MESSAGE));
     }
 
@@ -189,7 +193,4 @@ public class TodosWiremockTest {
                 .withStatusMessage(ERROR_MESSAGE)));
     }
 
-    private void openTodosPage() {
-        webDriver.get("http://localhost:" + localServerPort);
-    }
 }

@@ -9,10 +9,10 @@ import lombok.*;
 @Setter(AccessLevel.NONE)
 public class Todo {
     private int id;
-    private String text;
-    private boolean done;
+    private String text = "";
+    private boolean done = false;
 
     public TodoBuilder copy() {
-        return Todo.builder().id(id).text(text);
+        return Todo.builder().id(id).text(text).done(done);
     }
 }

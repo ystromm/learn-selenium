@@ -1,6 +1,9 @@
-package com.github.ystromm.learn_selenium.webapp;
+package com.github.ystromm.learn_selenium.webapp.spring;
 
 import com.github.ystromm.learn_selenium.backend_impl.BackendMain;
+import com.github.ystromm.learn_selenium.webapp.WebappMain;
+import com.github.ystromm.learn_selenium.webapp.webdriver.Bys;
+import com.github.ystromm.learn_selenium.webapp.webdriver.Firefox;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,9 +17,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 
-import static com.github.ystromm.learn_selenium.webapp.Screenshot.screenshot;
-import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.isDisplayed;
-import static com.github.ystromm.learn_selenium.webapp.WebElementMatchers.withText;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.Screenshot.screenshot;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.WebElementMatchers.isDisplayed;
+import static com.github.ystromm.learn_selenium.webapp.webdriver.WebElementMatchers.withText;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
@@ -40,7 +43,7 @@ public class BasicTest {
 
     @After
     public void tearDownWebDriver() throws IOException {
-        screenshot(webDriver, testName);
+        screenshot(webDriver, testName.getMethodName());
         webDriver.quit();
     }
 

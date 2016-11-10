@@ -21,11 +21,12 @@
 </head>
 <body ng-app="todos">
 <p>backend.server.port={{backend.server.port}}</p>
+<p>TODOS_URL={{TODOS_URL}}</p>
 <div ui-view></div>
 </div>
 <script>
     angular.module('todos')
-    .constant('TODOS_URL', "http://localhost:{{backend.server.port}}");
+    .constant('TODOS_URL', "{{TODOS_URL}}");
 </script>
 </body>
 </html>

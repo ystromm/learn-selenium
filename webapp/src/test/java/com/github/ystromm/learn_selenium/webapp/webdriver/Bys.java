@@ -1,4 +1,4 @@
-package com.github.ystromm.learn_selenium.webapp;
+package com.github.ystromm.learn_selenium.webapp.webdriver;
 
 import org.openqa.selenium.By;
 

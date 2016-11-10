@@ -1,4 +1,4 @@
-package com.github.ystromm.learn_selenium.webapp;
+package com.github.ystromm.learn_selenium.webapp.webdriver;
 
 public final class Travis {
 

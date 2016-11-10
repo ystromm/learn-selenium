@@ -1,4 +1,4 @@
-package com.github.ystromm.learn_selenium.webapp;
+package com.github.ystromm.learn_selenium.webapp.webdriver;
 
 import com.google.common.base.Charsets;
 import org.openqa.selenium.firefox.FirefoxBinary;
@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 
 public final class Firefox {
 
-    static FirefoxDriver firefoxDriver() throws IOException {
+    public static FirefoxDriver firefoxDriver() throws IOException {
         final FirefoxBinary firefoxBinary = Travis.onTravis() ? new FirefoxBinary(new File(getFirefoxPath())) : new FirefoxBinary();
         return new FirefoxDriver(firefoxBinary, new FirefoxProfile());
     }
