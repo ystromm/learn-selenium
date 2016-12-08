@@ -29,6 +29,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.16.10'
     testCompile project(':backend-impl')
     testCompile 'org.seleniumhq.selenium:selenium-java:3.0.1'
+    testCompile 'org.fluentlenium:fluentlenium-junit:3.0.4'
     testCompile 'org.awaitility:awaitility:2.0.0'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile 'org.springframework.boot:spring-boot-starter-mustache'
