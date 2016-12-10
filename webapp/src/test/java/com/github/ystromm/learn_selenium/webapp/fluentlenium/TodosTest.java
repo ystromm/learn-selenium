@@ -32,7 +32,7 @@ public class TodosTest extends FluentTest {
         System.setProperty(PropertyNames.BACKEND_SERVER_PORT, Integer.toString(localServerPort));
         System.setProperty(PropertyNames.TODOS_URL, "http://localhost:" + localServerPort);
     }
-    
+
     @Test
     public void title_should_be_todos() {
         goTo("http://localhost:" + localServerPort);
