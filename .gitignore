@@ -1,5 +1,4 @@
-.gradle
-.idea
-*.iml
+node_modules
 build
-*.png
+.idea
+.gradle

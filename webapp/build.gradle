@@ -11,12 +11,16 @@ plugins {
 
 apply plugin: 'java'
 apply plugin: 'application'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 mainClassName = 'com.github.ystromm.learn_selenium.webapp.WebappMain'
 
 repositories {
     jcenter()
+}
+
+node {
+    download = true
 }
 
 dependencies {
@@ -39,6 +43,10 @@ dependencies {
     testCompile 'au.com.dius:pact-jvm-consumer-junit_2.11:3.3.2'
 }
 
+task installElm(type: NpmTask) {
+    // install the express package only
+    args = ['install', 'elm']
+}
 test {
     systemProperty 'testReportDir', project.testReportDir
 }
