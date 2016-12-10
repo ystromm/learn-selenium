@@ -41,10 +41,25 @@ dependencies {
     testCompile 'org.springframework.boot:spring-boot-starter-mustache'
 }
 
-task installElm(type: NpmTask) {
+task npmInstallElm(type: NpmTask) {
+
     // install the express package only
     args = ['install', 'elm']
 }
+
+
+task elmMake(type:Exec) {
+    dependsOn npmInstallElm
+    inputs.files file("src/main/elm/App.elm"), file("elm-stuff")
+    outputs.file file("build/resources/main/static/js/App.js")
+
+    commandLine "elm", "make", "--yes", "--output", "build/resources/main/static/js/App.js", "src/main/elm/App.elm"
+}
+
+assemble {
+    dependsOn elmMake
+}
+
 test {
     systemProperty 'testReportDir', project.testReportDir
 }
