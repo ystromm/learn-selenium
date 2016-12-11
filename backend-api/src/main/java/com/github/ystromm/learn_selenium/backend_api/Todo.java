@@ -15,4 +15,8 @@ public class Todo {
     public TodoBuilder copy() {
         return Todo.builder().id(id).text(text).done(done);
     }
+
+    public static Todo todo(String text) {
+        return Todo.builder().text(text).done(false).build();
+    }
 }
