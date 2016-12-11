@@ -7,8 +7,8 @@ cache:
   directories:
      - webapp-elm/elm-stuff/build-artifacts
 install:
-  - node -version
-  - npm -version
+  - node --version
+  - npm --version
   - npm install -g elm@
 before_script:
   - "export DISPLAY=:99.0"
