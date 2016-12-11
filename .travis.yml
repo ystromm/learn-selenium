@@ -3,7 +3,13 @@ jdk:
   - oraclejdk8
 addons:
   firefox: 43.0
-install: true # skips gradle assemble
+cache:
+  directories:
+     - webapp-elm/elm-stuff/build-artifacts
+install:
+  - node -version
+  - npm -version
+  - npm install -g elm@
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
