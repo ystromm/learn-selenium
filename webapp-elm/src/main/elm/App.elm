@@ -5,6 +5,6 @@ import Html.Events exposing (..)
 import String
 
 main =
-        ul [attribute "data-test-id" "todos_items"] [
-           li [attribute "data-test-id" "todos_items_item"] [text "Don't forget!"]
+        ul [attribute "data-test-id" "todos_items_ul"] [
+           li [attribute "data-test-id" "todos_items_li"] [text "Don't forget!"]
         ]

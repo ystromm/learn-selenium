@@ -49,14 +49,14 @@ public class TodosTest extends FluentTest {
     @Test
     public void should_have_items_list() {
         goTo(baseUrl());
-        assertThat($(data_test_id("todos_items")), hasSize(1));
+        assertThat($(data_test_id("todos_items_ul")), hasSize(1));
     }
 
     @Test
     public void should_have_items_list_with_some_item() {
         todoRepository.create(todo("Don't forget"));
         goTo(baseUrl());
-        assertThat($(data_test_id("todos_items_item")), hasSize(1));
+        assertThat($(data_test_id("todos_items_li")), hasSize(1));
     }
 
 
