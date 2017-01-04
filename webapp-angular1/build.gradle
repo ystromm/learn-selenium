@@ -28,7 +28,7 @@ dependencies {
     runtime 'org.webjars:jquery:3.1.1'
     runtime 'org.webjars:angular-ui-router:0.2.18'
     testCompileOnly 'org.projectlombok:lombok:1.16.10'
-    testCompile project(':backend-impl')
+    compile project(':backend-impl')
     testCompile 'org.seleniumhq.selenium:selenium-java:3.0.1'
     testCompile 'org.fluentlenium:fluentlenium-junit:3.0.4'
     testCompile 'org.awaitility:awaitility:2.0.0'
