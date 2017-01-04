@@ -16,12 +16,16 @@ type alias Todo =
 
 type alias Model =
   {
-      todos: List Todo
+      todos: List Todo,
+      text: String,
+      id: Int
   }
 
 type Msg
-  = MorePlease
---  | NewGif (Result Http.Error String)
+  = Add
+  | Text String
+  | Delete Int
+  | Done Int
 
 main =
   Html.program
@@ -32,34 +36,47 @@ main =
     }
 
 init : (Model, Cmd Msg )
-init = (Model [ Todo 2 "Fuhgettaboutit" False, Todo 1 "Don't forget" True ] , Cmd.none )
+init = (Model [ Todo 1 "Don't forget" True, Todo 2 "Fuhgettaboutit" False ] "" 3, Cmd.none )
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
-    MorePlease ->
-      (model, Cmd.none)
-
---    NewGif (Ok newUrl) ->
---      (model Cmd.none)
-
---    NewGif (Err _) ->
---      (model, Cmd.none)
+    Text text ->
+        ({model | text = text}, Cmd.none)
+    Add ->
+      (add model, Cmd.none)
+    Delete id ->
+      (delete model id, Cmd.none)
+    Done id ->
+      (done model id, Cmd.none)
 
 view : Model -> Html Msg
 view model =
+        div [] [
         div [attribute "data-test-id" "todos_items_ul"]
            (List.map (\ todo ->
                div [attribute "data-test-id" "todos_items_li"] [
-                       input [ type_ "checkbox", checked todo.done] [],
+                       input [ type_ "checkbox", checked todo.done, onClick (Done todo.id) ] [],
                        input [ type_ "text", value todo.text] [],
-                       button [ class "btn btn-default glyphicon glyphicon-remove" ] []
+                       button [ class "btn btn-default glyphicon glyphicon-remove", onClick (Delete todo.id)] []
                        ]
-           ) model.todos)
+           ) model.todos),
+           input [ type_ "text", placeholder "New todo", onInput Text, value model.text] [],
+           button [ class "btn btn-default glyphicon glyphicon-plus", onClick Add] []
+           ]
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
   Sub.none
+
+add : Model -> Model
+add model = Model ((Todo model.id model.text False) :: model.todos) "" (model.id+1)
+
+done : Model -> Int -> Model
+done model id = model
+
+delete : Model -> Int -> Model
+delete model id = Model (List.filter (\ todo -> todo.id /= id) model.todos) model.text model.id
 
 -- getTodos : Http.Request List Todo
 -- getTodos =
