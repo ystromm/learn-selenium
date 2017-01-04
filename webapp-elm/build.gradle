@@ -29,7 +29,7 @@ dependencies {
     compile 'org.webjars:webjars-locator'
     runtime 'org.webjars:bootstrap:3.3.7-1'
     testCompileOnly 'org.projectlombok:lombok:1.16.10'
-    testCompile project(':backend-impl')
+    compile project(':backend-impl')
     testCompile 'org.seleniumhq.selenium:selenium-java:3.0.1'
     testCompile 'org.fluentlenium:fluentlenium-junit:3.0.4'
     testCompile 'org.awaitility:awaitility:2.0.0'
