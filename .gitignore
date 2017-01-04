@@ -3,3 +3,6 @@ build
 .idea
 .gradle
 elm-stuff
+*.icloud
+*.iml
+.DS_Store
