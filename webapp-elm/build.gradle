@@ -38,15 +38,14 @@ dependencies {
 }
 
 task elmMake(type: Exec) {
-    inputs.files file("src/main/elm/App.elm"), file("elm-stuff")
+    inputs.files file("src/main/elm/App.elm")
     outputs.file file("build/resources/main/static/js/App.js")
+    outputs.dir file("elm-stuff")
 
     commandLine "elm", "make", "--yes", "--output", "build/resources/main/static/js/App.js", "src/main/elm/App.elm"
 }
 
-assemble {
-    dependsOn elmMake
-}
+compileJava.dependsOn elmMake
 
 test {
     systemProperty 'testReportDir', project.testReportDir
