@@ -9,7 +9,7 @@ import static com.github.ystromm.learn_selenium.webapp_angular1.PropertyNames.BA
 import static com.github.ystromm.learn_selenium.webapp_angular1.PropertyNames.TODOS_URL;
 
 @Controller
-public class HomeController {
+public class IndexController {
     @GetMapping("/")
     String index(Map<String, Object> model) {
         model.put(BACKEND_SERVER_PORT, System.getProperty(BACKEND_SERVER_PORT));
