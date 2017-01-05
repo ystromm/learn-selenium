@@ -4,9 +4,14 @@ import Html.Events exposing (..)
 --import Html.Events.Extra exposing (..)
 import String
 import Http
+import Maybe exposing (withDefault)
 import Json.Decode as Decode
 import Json.Encode as Encode
 import Task exposing (..)
+
+type alias Flags = {
+    todoUrl: String
+  }
 
 type alias Todo = {
     id: Int,
@@ -16,9 +21,10 @@ type alias Todo = {
 
 type alias Model =
   {
-      todos: List Todo,
-      text: String,
-      reason: String
+    todoUrl: String,
+    todos: List Todo,
+    text: String,
+    reason: String
   }
 
 type Msg
@@ -28,20 +34,22 @@ type Msg
   | Done Todo
   | Created (Result Http.Error Todo)
   | Updated (Result Http.Error Todo)
-  | Deleted (Result Http.Error Todo)
+  | Deleted (Result Http.Error Int)
   | Get (Result Http.Error (List Todo))
 
 main =
-  Html.program
-    {
+    Html.programWithFlags {
         init = init,
         view = view,
         update = update,
         subscriptions = subscriptions
     }
 
-init : (Model, Cmd Msg)
-init = (Model [ ] "" "", getTodos)
+init : Maybe Flags -> ( Model, Cmd Msg )
+init flags = let
+        withDefaultFlags = withDefault (Flags "http://localhost:8081/api/todo") flags
+    in
+        (Model withDefaultFlags.todoUrl [ ] "" "", getTodos withDefaultFlags.todoUrl)
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -55,21 +63,21 @@ update msg model =
         Created (Err error) ->
             ({model | reason = errorMessage error}, Cmd.none)
         Updated (Ok todo) ->
-             (model, getTodos)
+             (model, getTodos model.todoUrl)
         Updated (Err error) ->
             ({model | reason = errorMessage error}, Cmd.none)
-        Deleted (Ok todo) ->
-             (delete model todo.id, Cmd.none)
+        Deleted (Ok id) ->
+             (delete model id, Cmd.none)
         Deleted (Err error) ->
             ({model | reason = errorMessage error}, Cmd.none)
         Text text ->
             ({model | text = text}, Cmd.none)
         Add ->
-            (model, createTodo model.text)
-        Delete todo ->
-            (model, deleteTodo todo)
+            (model, createTodo model.todoUrl model.text)
         Done todo ->
-            (model, updateTodo {todo | done = not todo.done})
+            (model, updateTodo model.todoUrl  {todo | done = not todo.done})
+        Delete todo ->
+            (model, deleteTodo model.todoUrl todo)
 
 view : Model -> Html Msg
 view model =
@@ -95,10 +103,10 @@ done : Model -> Int -> Model
 done model id = model
 
 delete : Model -> Int -> Model
-delete model id = Model (List.filter (\ todo -> todo.id /= id) model.todos) model.text ""
+delete model id = Model model.todoUrl (List.filter (\ todo -> todo.id /= id) model.todos) model.text ""
 
 add : Model -> Todo -> Model
-add model todo = Model (todo :: model.todos) "" ""
+add model todo = Model model.todoUrl (todo :: model.todos) "" ""
 
 errorMessage: Http.Error -> String
 errorMessage error =
@@ -109,33 +117,33 @@ errorMessage error =
     Http.BadPayload message _ -> message
     Http.BadStatus response -> response.status.message
 
-getTodos : Cmd Msg
-getTodos =
+getTodos : String -> Cmd Msg
+getTodos todoUrl =
     let
-        url = "http://localhost:8081/api/todo"
+        url = todoUrl
         request = Http.get url decodeTodos
     in
         Http.send Get request
 
-deleteTodo : Todo -> Cmd Msg
-deleteTodo todo =
+deleteTodo : String -> Todo -> Cmd Msg
+deleteTodo todoUrl todo =
     let
-        url = "http://localhost:8081/api/todo/" ++ (toString todo.id)
+        url = todoUrl ++ "/" ++ (toString todo.id)
         request = Http.request {
             method = "delete",
             headers = [],
             url = url,
             body = Http.jsonBody <| encodeTodo todo,
-            expect = Http.expectJson decodeTodo,
+            expect = Http.expectStringResponse (\_ -> Ok (todo.id)),
             timeout = Nothing,
             withCredentials = False}
     in
         Http.send Deleted request
 
-updateTodo : Todo -> Cmd Msg
-updateTodo todo =
+updateTodo : String -> Todo -> Cmd Msg
+updateTodo todoUrl todo =
     let
-        url = "http://localhost:8081/api/todo/" ++ (toString todo.id)
+        url = todoUrl ++ "/" ++ (toString todo.id)
         request = Http.request {
             method = "put",
             headers = [],
@@ -147,10 +155,10 @@ updateTodo todo =
     in
         Http.send Updated request
 
-createTodo : String -> Cmd Msg
-createTodo text =
+createTodo : String -> String -> Cmd Msg
+createTodo todoUrl text =
     let
-        url = "http://localhost:8081/api/todo"
+        url = todoUrl
         todo = Todo 0 text False
         request = Http.request {
             method = "post",

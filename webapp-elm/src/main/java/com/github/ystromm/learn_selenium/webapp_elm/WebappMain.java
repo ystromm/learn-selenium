@@ -11,6 +11,11 @@ import org.springframework.context.annotation.Import;
 public class WebappMain {
 
     public static void main(String[] args) {
+        System.setProperty(PropertyNames.TODOS_URL, baseUrl());
         SpringApplication.run(WebappMain.class,  args);
+    }
+
+    private static String baseUrl() {
+        return "http://localhost:8081/api/todo";
     }
 }

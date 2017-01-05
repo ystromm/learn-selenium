@@ -26,6 +26,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.16.10'
     compile 'com.google.guava:guava:19.0'
     compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-mustache'
     compile 'org.webjars:webjars-locator'
     runtime 'org.webjars:bootstrap:3.3.7-1'
     testCompileOnly 'org.projectlombok:lombok:1.16.10'
@@ -34,7 +35,6 @@ dependencies {
     testCompile 'org.fluentlenium:fluentlenium-junit:3.0.4'
     testCompile 'org.awaitility:awaitility:2.0.0'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile 'org.springframework.boot:spring-boot-starter-mustache'
 }
 
 task elmMake(type: Exec) {

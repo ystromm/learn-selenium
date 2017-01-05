@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static com.github.ystromm.learn_selenium.backend_api.Todo.todo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @Wait
@@ -58,7 +59,6 @@ public class TodosTest extends FluentTest {
         goTo(baseUrl());
         assertThat($(data_test_id("todos_items_li")), hasSize(1));
     }
-
 
     private static String data_test_id(String value) {
         return "*[data-test-id='" + value + "']";
