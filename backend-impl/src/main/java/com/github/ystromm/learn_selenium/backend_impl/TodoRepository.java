@@ -17,11 +17,6 @@ public class TodoRepository {
     @VisibleForTesting
     final AtomicInteger nextId = new AtomicInteger();
 
-    public TodoRepository() {
-        create(Todo.builder().text("Remember this!").done(false).build());
-        create(Todo.builder().text("Fuhgettaboutit.").done(true).build());
-    }
-
     public Todo create(Todo todo) {
         final Todo newTodo = todo.copy().id(nextId.incrementAndGet()).build();
         todos.put(newTodo.getId(), newTodo);
