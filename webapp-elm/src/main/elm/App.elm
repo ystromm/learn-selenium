@@ -85,15 +85,18 @@ view model =
         div [attribute "data-test-id" "todos_items_ul"]
            (List.map (\ todo ->
                div [attribute "data-test-id" "todos_items_li"] [
-                       input [ type_ "checkbox", checked todo.done, onClick (Done todo) ] [],
-                       input [ type_ "text", value todo.text] [],
-                       button [ class "btn btn-default glyphicon glyphicon-remove", onClick (Delete todo)] []
+                       input [ data_test_id "todo_done_checkbox" todo.id, type_ "checkbox", checked todo.done, onClick (Done todo) ] [],
+                       input [ data_test_id "todo_text_text" todo.id, type_ "text", value todo.text] [],
+                       button [ data_test_id "todo_delete_button" todo.id, class "btn btn-default glyphicon glyphicon-remove", onClick (Delete todo)] []
                        ]
            ) model.todos),
-           input [ type_ "text", placeholder "New todo", onInput Text, value model.text] [],
-           button [ class "btn btn-default glyphicon glyphicon-plus", onClick Add] [],
+           input [ attribute "data-test-id" "todo_add_text", type_ "text", placeholder "New todo", onInput Text, value model.text] [],
+           button [ attribute "data-test-id" "todo_add_button", class "btn btn-default glyphicon glyphicon-plus", onClick Add] [],
            div [] [text model.reason]
            ]
+
+data_test_id : String -> Int -> Attribute msg
+data_test_id name id = attribute "data-test-id" (name ++ "_" ++ (toString id))
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
